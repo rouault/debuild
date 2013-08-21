@@ -10,11 +10,6 @@
 
 PYVERS=$(shell pyversions -v -r debian/control) $(shell py3versions -v -r)
 PYDEF=$(shell pyversions -dv)
-RUBYDEF=$(shell ruby --version|cut -d' ' -f2|cut -d. -f1,2)
-PERLDEF=$(shell perl -V:version|cut -d\' -f2)
-PERL_VENDOR_ARCH=$(shell perl -V:vendorarch|cut -d\' -f2)
-PERL_ARCH_NAME=$(shell perl -V:archname|cut -d\' -f2)
-PERL_PATH="$(PERL_VENDOR_ARCH)/$(PERL_ARCH_NAME)"
 SWIGVER=$(shell swig -version |grep Version|cut -d' ' -f3|sed -e 's/\.//g')
 
 GDALVER=$(shell cat VERSION|sed -e 's/\./ /g')
@@ -27,8 +22,6 @@ versions:
 	@echo Swig version: $(SWIGVER)
 	@echo Python default: $(PYDEF)
 	@echo Python versions: $(PYVERS)
-	@echo Ruby default: $(RUBYDEF)
-	@echo Perl default: $(PERLDEF)
 
 #
 # The following targets are useful to autogen independent plugins sources
@@ -79,9 +72,9 @@ configure-stamp:
 			--with-curl \
 			--with-pg \
 			--with-mysql \
-			--with-perl \
-			--with-ruby \
-			--with-java=/usr/lib/jvm/default-java \
+			--without-perl \
+			--without-ruby \
+			--without-java \
 			--with-python \
 			--with-odbc \
 			--with-ogdi=no \
@@ -113,10 +106,6 @@ build-stamp: configure-stamp
 
 	cp `ls GDALmake.opt-*|tail -1` GDALmake.opt
 	$(MAKE) lib-target apps-target
-	rm -rf $(CURDIR)/swig/perl/*.c  $(CURDIR)/swig/perl/*.cpp
-	$(MAKE) -C $(CURDIR)/swig/perl generate build
-	$(MAKE) -C $(CURDIR)/swig/ruby generate build
-	$(MAKE) -C $(CURDIR)/swig/java clean generate build
 
 	# It needs pre-installing just after the building due to intermediate cleaning.
 	# Apply conditionally an on-fly patch for pre 1.3.38 swig versions.
@@ -140,8 +129,6 @@ clean:
 	dh_testroot
 
 	[ ! -f GDALmake.opt ] || $(MAKE) distclean
-	rm -rf $(CURDIR)/swig/ruby/.libs $(CURDIR)/swig/perl/*.bs
-	rm -rf $(CURDIR)/swig/java/*.so $(CURDIR)/swig/java/*.o $(CURDIR)/swig/java/build/ $(CURDIR)/swig/java/*.jar $(CURDIR)/swig/java/.libs
 	rm -rf $(CURDIR)/.libs
 	rm -f GDALmake.opt-*
 	rm -rf $(CURDIR)/man/man1
@@ -160,8 +147,8 @@ install: build
 	dh_installdirs
 
 	cp `ls GDALmake.opt-*|tail -1` GDALmake.opt
-	$(MAKE) install BINDINGS="perl ruby java" DESTDIR=$(CURDIR)/debian/tmp \
-			INST_DATA="\$$(prefix)/share/gdal/$(GDAL_MAJOR).$(GDAL_MINOR)"
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp \
+		INST_DATA="\$$(prefix)/share/gdal/$(GDAL_MAJOR).$(GDAL_MINOR)"
 	$(MAKE) install-docs DESTDIR=$(CURDIR)/debian/tmp \
 		"INST_DOCS=\$$(prefix)/share/doc/libgdal-doc"\
 		"INST_MAN=\$$(prefix)/share/man"
@@ -170,30 +157,16 @@ install: build
 		"INST_MAN=\$$(prefix)/share/man"
 
 	# install python stuff previuosly built and pre-installed
+	mkdir -p $(CURDIR)/debian/tmp/usr/lib
 	cp -a $(CURDIR)/debian/python-tmp/usr/lib/* $(CURDIR)/debian/tmp/usr/lib/.
 	install -o root -g root -d $(CURDIR)/debian/tmp/usr/bin
 	install -o root -g root -m 755 $(CURDIR)/swig/python/scripts/*.py $(CURDIR)/debian/tmp/usr/bin/.
 
-	# java stuff
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/java $(CURDIR)/debian/tmp/usr/lib/jni
-	install -o root -g root $(CURDIR)/swig/java/gdal.jar $(CURDIR)/debian/tmp/usr/share/java/.
-	install -o root -g root $(CURDIR)/swig/java/*jni.so* $(CURDIR)/debian/tmp/usr/lib/jni
-
 	# removing license file
 	rm -f $(CURDIR)/debian/tmp/usr/share/gdal/$(GDAL_MAJOR).$(GDAL_MINOR)/LICENSE.TXT
-	# removing empty packlist MakeMaker files
-	-find $(CURDIR)/debian/tmp$(PERL_PATH) -type f -name .packlist -exec rm -f {} \;
-	# removing embedded rpath in perl shlibs
-	-find $(CURDIR)/debian/tmp/$(PERL_PATH) -type f -name "*.so" -exec chrpath --delete {} \;
 	# removing embedded rpath in main lib
 	-find $(CURDIR)/debian/tmp/usr/lib -type f -name "*.so*" -exec chrpath --delete {} \;
 
-	# moves ruby/perl stuff the right dirs
-	install -o root -g root -d $(CURDIR)/debian/tmp/usr/lib/perl5/auto
-	install -o root -g root -d $(CURDIR)/debian/tmp/usr/lib/ruby/$(RUBYDEF)
-	mv $(CURDIR)/debian/tmp$(PERL_PATH)/auto/* $(CURDIR)/debian/tmp/usr/lib/perl5/auto/.
-	mv $(CURDIR)/debian/tmp$(PERL_PATH)/Geo $(CURDIR)/debian/tmp/usr/lib/perl5/.
-	mv $(CURDIR)/debian/tmp/usr/local/lib/site_ruby/$(RUBYDEF)/* $(CURDIR)/debian/tmp/usr/lib/ruby/$(RUBYDEF)/.
 	# copy sample programs for python-gdal
 	install -o root -g root -d $(CURDIR)/debian/tmp/usr/share/doc/python-gdal/examples
 	install -o root -g root -m 755 $(CURDIR)/swig/python/samples/*.py $(CURDIR)/debian/tmp/usr/share/doc/python-gdal/examples/.
@@ -214,12 +187,10 @@ binary-common:
 	dh_fixperms
 	dh_lintian
 	dh_python2 -X.info
-	dh_python3 -X.info
 	dh_numpy
-	dh_perl
 	# Adds per arch symbols for compatible archs
-	ln -f $(CURDIR)/debian/libgdal*.symbols.i386 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-i386
-	ln -f $(CURDIR)/debian/libgdal*.symbols.amd64 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-amd64
+	ln -fs $(CURDIR)/debian/libgdal*.symbols.i386 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-i386
+	ln -fs $(CURDIR)/debian/libgdal*.symbols.amd64 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-amd64
 	# Forces failure ignoring to collect new symbols on all archs
 	dh_makeshlibs -- -c0
 	# Forces failure when symbols change
