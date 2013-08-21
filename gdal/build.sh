@@ -2,7 +2,7 @@
 
 set -o errexit
 
-FLAGS="-b -j5"
+FLAGS="-b -j5 -ns"
 if test "$1" != "-c" ; then
   FLAGS="$FLAGS -nc"
 else
@@ -18,5 +18,3 @@ echo dpkg-buildpackage $FLAGS
 echo
 
 dpkg-buildpackage $FLAGS
-
-
