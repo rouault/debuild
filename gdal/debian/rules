@@ -8,7 +8,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PYVERS=$(shell pyversions -v -r debian/control) $(shell py3versions -v -r)
+PYVERS=$(shell pyversions -v -r debian/control)
 PYDEF=$(shell pyversions -dv)
 SWIGVER=$(shell swig -version |grep Version|cut -d' ' -f3|sed -e 's/\.//g')
 
@@ -186,7 +186,8 @@ binary-common:
 	dh_compress
 	dh_fixperms
 	dh_lintian
-	dh_python2 -X.info
+	rm -rf $(CURDIR)/debian/python-gdal/usr/lib/python2.*/dist-packages
+	./dh_python2_plfix -X.info
 	dh_numpy
 	# Adds per arch symbols for compatible archs
 	ln -fs $(CURDIR)/debian/libgdal*.symbols.i386 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-i386
