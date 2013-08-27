@@ -104,6 +104,16 @@ build: build-stamp
 build-stamp: configure-stamp
 	dh_testdir
 
+	# Update the GDAL Version string/date to be build specific.
+	rm -f gcore/gdal_version.h
+	cp debian/gdal_version.h gcore/gdal_version.h
+
+	sed -i 's/@@@DATE@@@/'`date +%Y%m%d`'/g' gcore/gdal_version.h
+	sed -i 's/@@@NAME@@@/'`date +%Y%m%d`'/g' gcore/gdal_version.h
+
+	echo "Updated gdal_version.h:"
+	cat gcore/gdal_version.h
+
 	cp `ls GDALmake.opt-*|tail -1` GDALmake.opt
 	$(MAKE) lib-target apps-target
 

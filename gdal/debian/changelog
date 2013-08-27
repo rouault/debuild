@@ -1,3 +1,9 @@
+gdal (1.11.0-4pl) precise; urgency=high
+
+  * Fix gdalplugin path to not hard code in the version.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
 gdal (1.11.0-3pl) precise; urgency=high
 
   * Fourth trunk attempt.
