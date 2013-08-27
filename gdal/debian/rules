@@ -187,7 +187,7 @@ binary-common:
 	dh_fixperms
 	dh_lintian
 	rm -rf $(CURDIR)/debian/python-gdal/usr/lib/python2.*/dist-packages
-	./dh_python2_plfix -X.info
+	$(CURDIR)/debian/dh_python2_plfix -X.info
 	dh_numpy
 	# Adds per arch symbols for compatible archs
 	ln -fs $(CURDIR)/debian/libgdal*.symbols.i386 $(CURDIR)/debian/libgdal1h.symbols.kfreebsd-i386

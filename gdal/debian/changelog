@@ -1,3 +1,21 @@
+gdal (1.11.0-3pl) precise; urgency=high
+
+  * Fourth trunk attempt.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
+gdal (1.11.0-2pl) precise; urgency=high
+
+  * Third trunk attempt.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
+gdal (1.11.0-1pl) precise; urgency=high
+
+  * Second trunk attempt.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
 gdal (1.11.0-0~precise1) precise; urgency=high
 
   * First trunk attempt.
