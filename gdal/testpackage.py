@@ -40,5 +40,8 @@ for file, minsize, maxsize in checks:
         failures += 1
     
 
+if failures == 0:
+    print 'testpackage.py determined python-gdal looks ok.'
+
 sys.exit(failures)
 

@@ -14,6 +14,8 @@ else
   shift 1
 fi
 
+ORIG_DIR=`pwd`
+
 cd $HOME/packages/gdal/gdal
 
 # Make sure we are picking up the latest and greatest.
@@ -32,8 +34,10 @@ echo
 
 dpkg-buildpackage $FLAGS
 
-if ./testpackage.py ; then
+if $ORIG_DIR/testpackage.py ; then
+  echo "Copy .debs to /vagrant/debs"
+  cp ../*.deb /vagrant/debs
+else
+  echo "Job FAILED, no .debs copied."
   exit 1
 fi
-
-cp ../*.deb /vagrant/debs
