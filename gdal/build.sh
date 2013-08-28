@@ -16,6 +16,9 @@ fi
 
 cd $HOME/packages/gdal/gdal
 
+# Make sure we are picking up the latest and greatest.
+svn update
+
 # Force some lightweight things to get redone even if we aren't doing a 
 # clean build.
 rm -f build-stamp
@@ -28,5 +31,9 @@ echo dpkg-buildpackage $FLAGS
 echo
 
 dpkg-buildpackage $FLAGS
+
+if ./testpackage.py ; then
+  exit 1
+fi
 
 cp ../*.deb /vagrant/debs
