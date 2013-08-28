@@ -109,7 +109,6 @@ build-stamp: configure-stamp
 	cp debian/gdal_version.h gcore/gdal_version.h
 
 	sed -i 's/@@@DATE@@@/'`date +%Y%m%d`'/g' gcore/gdal_version.h
-	sed -i 's/@@@NAME@@@/'`date +%Y%m%d`'/g' gcore/gdal_version.h
 
 	echo "Updated gdal_version.h:"
 	cat gcore/gdal_version.h
@@ -121,7 +120,7 @@ build-stamp: configure-stamp
 	# Apply conditionally an on-fly patch for pre 1.3.38 swig versions.
 	for V in $(PYVERS); do \
 		cp GDALmake.opt-$$V GDALmake.opt; \
-		$(MAKE) -C $(CURDIR)/swig/python clean; \
+		$(MAKE) -C $(CURDIR)/swig/python veryclean; \
 		$(MAKE) -C $(CURDIR)/swig/python generate build; \
 		$(MAKE) -C $(CURDIR)/swig/python install DESTDIR=$(CURDIR)/debian/python-tmp; \
 	done
