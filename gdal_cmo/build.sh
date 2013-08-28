@@ -28,7 +28,7 @@ make default \
     INCLUDE="-I$GDALBLD/port -I$GDALBLD/gcore -I$GDALBLD/frmts/vrt" \
     LIBS="-L$GDALBLD/.libs -lgdal"
 
-./mkdeb.sh 1pl
+./mkdeb.sh $1
 
 ls -l *.deb
 mv *.deb /vagrant/debs
