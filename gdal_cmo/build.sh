@@ -7,7 +7,7 @@ GDALBLD=/home/vagrant/packages/gdal/gdal
 if test "x$1" = "x" ; then
   echo "Usage: mkdeb.sh <packaging>"
   echo
-  echo "ie. mkdeb.sh 3pl"
+  echo "ie. mkdeb.sh [-c] 3pl"
   exit 1
 fi
 
@@ -24,13 +24,16 @@ fi
 cd gdal/driver
 git pull origin master
 
+make clean
 make default \
-    INCLUDE="-I$GDALBLD/port -I$GDALBLD/gcore -I$GDALBLD/frmts/vrt" \
-    LIBS="-L$GDALBLD/.libs -lgdal"
+    INCLUDE="-I$GDALBLD/port -I$GDALBLD/gcore -I$GDALBLD/frmts/vrt -I$GDALBLD/ogr -I/usr/include/json" \
+    LIBS="-L$GDALBLD/.libs -lgdal -ljson" \
+    COMPILE_FLAGS="-fPIC -Wall"
 
 ./mkdeb.sh $1
 
 ls -l *.deb
+rm /vagrant/debs/gdal-cmo*.deb
 mv *.deb /vagrant/debs
 
 
