@@ -1,0 +1,11 @@
+Package: gdal-ecw
+Version: 1.11.0-@@@PACKAGING@@@
+Architecture: amd64
+Maintainer: Frank Warmerdam <warmerdam@pobox.com>
+Installed-Size: 755
+Depends: libgdal1h
+Section: science
+Priority: extra
+Description: GDAL ECW Driver
+
+
