@@ -1,0 +1,10 @@
+Package: gdal-mrsid
+Version: 1.11.0-@@@PACKAGING@@@
+Architecture: amd64
+Maintainer: Frank Warmerdam <warmerdam@pobox.com>
+Installed-Size: 755
+Depends: libgdal1h, libgeotiff2
+Section: science
+Priority: extra
+Description: GDAL MrSID Driver
+
