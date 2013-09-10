@@ -33,7 +33,7 @@ make default \
 ./mkdeb.sh $1
 
 ls -l *.deb
-rm /vagrant/debs/gdal-cmo*.deb
+rm -f /vagrant/debs/gdal-cmo*.deb
 mv *.deb /vagrant/debs
 
 
