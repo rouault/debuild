@@ -1,3 +1,9 @@
+gdal (1.11.0-7pl) precise; urgency=high
+
+  * Refresh with cubic resampler fix (#5209).
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
 gdal (1.11.0-6pl) precise; urgency=high
 
   * Use /usr/local/share/gdal instead of /usr/local/share/gdal/1.11.
