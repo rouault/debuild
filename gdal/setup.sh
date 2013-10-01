@@ -2,6 +2,12 @@
 
 DEBUILD_TREE=`pwd`
 
+sudo apt-get install -y --force-yes \
+    python-all-dev doxygen debhelper libpoppler-private-dev \
+    liblzma-dev libopenjpeg-dev libarmadillo-dev libfreexl-dev \
+    libkml-dev liburiparser-dev netcdf-bin swig chrpath \
+    libproj-dev libepsilon-dev d-shlibs
+
 mkdir -p $HOME/packages/gdal
 cd $HOME/packages
 if test ! -d gdal ; then
@@ -13,3 +19,4 @@ if test ! -d gdal ; then
   cd gdal
   ln -s $DEBUILD_TREE/debian
 fi
+
