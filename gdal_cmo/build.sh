@@ -2,7 +2,7 @@
 
 set -o errexit
 
-GDALBLD=/home/vagrant/packages/gdal/gdal
+GDALBLD=$HOME/packages/gdal/gdal
 
 if test "x$1" = "x" ; then
   echo "Usage: mkdeb.sh <packaging>"
