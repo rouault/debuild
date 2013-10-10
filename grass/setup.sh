@@ -13,6 +13,9 @@ fi
 if test ! -d grass ; then
   tar xf $DEBUILD_TREE/$TARBALL
   mv `basename $TARBALL .tar.gz` grass
+
+  # This avoids linking against a full library path making things non-movable
+  patch -p0 < patches/VECTORDEPS.patch
 fi
 
 sudo apt-get install \
