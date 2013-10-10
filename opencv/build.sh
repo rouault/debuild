@@ -56,14 +56,14 @@ fi
 cd $OPENCV_SRC
 
 if test "$CLEAN" = "YES" ; then
-  cmake -D CMAKE_INSTALL_PREFIX=$PREP_TREE/usr . |& tee ../cmake_config.log
+  cmake -D CMAKE_INSTALL_PREFIX=$PREP_TREE/usr/local/pl . |& tee ../cmake_config.log
   make clean
 fi
 
 make
 
 rm -rf $PREP_TREE
-mkdir -p $PREP_TREE/usr
+mkdir -p $PREP_TREE/usr/local/pl
 
 make install
 
@@ -74,7 +74,7 @@ sed 's/@@@PACKAGING@@@/'$PACKAGING'/g' control.debian \
     | sed 's/@@@VERSION@@@/'$VERSION'/g' \
     > debwrk/DEBIAN/control
 
-rm -f grass_*.deb
+rm -f opencv-pl*.deb
 dpkg-deb --build debwrk $DEB
 
 echo Created: $DEB

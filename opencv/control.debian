@@ -1,4 +1,4 @@
-Package: grass
+Package: opencv-pl
 Version: @@@VERSION@@@-@@@PACKAGING@@@
 Architecture: amd64
 Maintainer: Frank Warmerdam <warmerdam@pobox.com>
