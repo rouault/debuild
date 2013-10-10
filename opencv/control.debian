@@ -1,0 +1,10 @@
+Package: grass
+Version: @@@VERSION@@@-@@@PACKAGING@@@
+Architecture: amd64
+Maintainer: Frank Warmerdam <warmerdam@pobox.com>
+Installed-Size: 755
+Depends: libstdc++6, zlib1g, libtiff4, libjpeg-dev, libjasper-dev, libpng12-dev
+Section: science
+Priority: extra
+Description: Planet Labs Minimalist OpenCV
+
