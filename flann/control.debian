@@ -1,0 +1,10 @@
+Package: flann-pl
+Version: @@@VERSION@@@-@@@PACKAGING@@@
+Architecture: amd64
+Maintainer: Frank Warmerdam <warmerdam@pobox.com>
+Installed-Size: 755
+Depends: libstdc++6, libhdf5-serial-dev
+Section: science
+Priority: extra
+Description: Planet Labs Minimalist FLANN
+
