@@ -78,6 +78,9 @@ mkdir -p debwrk/DEBIAN
 sed 's/@@@PACKAGING@@@/'$PACKAGING'/g' control.debian \
     | sed 's/@@@VERSION@@@/'$VERSION'/g' \
     > debwrk/DEBIAN/control
+mkdir -p debwrk/etc/ld.so.conf.d
+echo "/usr/local/pl/lib" > debwrk/etc/ld.so.conf.d/flann.conf
+cp postinst.debian debwrk/DEBIAN/postinst
 
 rm -f flann-pl*.deb
 dpkg-deb --build debwrk $DEB
