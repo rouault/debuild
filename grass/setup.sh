@@ -10,19 +10,16 @@ if test ! -f $TARBALL ; then
   curl $UPSTREAM_TARBALL -o $TARBALL
 fi
 
-mkdir -p $HOME/packages/grass
-cd $HOME/packages/grass
-
 if test ! -d grass ; then
   tar xf $DEBUILD_TREE/$TARBALL
-  mv grass-7.0.svn_src_snapshot_2013_08_24 grass
-  cd grass
-  rm -rf debian
-  ln -s $DEBUILD_TREE/debian
+  mv `basename $TARBALL .tar.gz` grass
 fi
 
 sudo apt-get install \
-     autoconf2.13 flex bison graphviz libmotif-dev libcairo2-dev \
-    libfftw3-dev libgdal1-dev libglu1-mesa-dev libtiff-dev libncurses5-dev \
-    libxmu-dev python-wxgtk2.8 libwxgtk2.8-dev tcl-dev tk-dev \
-    hardening-wrapper hardening-includes
+    autoconf2.13 flex bison graphviz libcairo2-dev \
+    libfftw3-dev libglu1-mesa-dev libtiff-dev libncurses5-dev \
+    libxmu-dev python-wxgtk2.8 libwxgtk2.8-dev tcl-dev tk-dev
+
+sudo apt-get install -y --force-yes \
+    proj-bin libproj-dev libgdal1-dev libgeotiff-dev \
+    fftw-dev libfreetype6-dev python-dateutil python-gdal gdal-bin

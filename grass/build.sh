@@ -7,31 +7,58 @@ if test `lsb_release -c | cut -f 2` != 'precise' ; then
   exit 1
 fi
 
-FLAGS="-b -uc -us"
-if test "$1" != "-c" ; then
-  FLAGS="$FLAGS -nc"
-else
+PREP_TREE=`pwd`/debwrk
+
+if test "$1" = "-c" ; then
+  CLEAN=YES
   shift 1
 fi
+if test  \! -f grass/config.status ; then
+  CLEAN=YES
+fi
 
-ORIG_DIR=`pwd`
+if test "x$1" = "x" ; then
+  echo "Usage: build.sh <packaging>"
+  echo
+  echo "ie. build.sh [-c] 3pl"
+  exit 1
+fi
 
-cd $HOME/packages/grass/grass
+PACKAGING=$1
+DEB=grass_7.0.svn-${PACKAGING}_amd64.deb
 
-# Make sure we are picking up the latest and greatest.
-#svn update
+cd grass
 
-# Force some lightweight things to get redone even if we aren't doing a 
-# clean build.
-rm -f build-stamp
-rm -rf debian/tmp
+if test "$CLEAN" = "YES" ; then
+  make distclean || echo "distclean failed..."
+  ./configure \
+      --prefix=/usr \
+      --without-opengl \
+      --with-freetype-includes=/usr/include/freetype2 \
+      --enable-largefile \
+      --without-tcltk
+fi
 
-echo 
-echo dpkg-buildpackage $FLAGS
-echo
+make -j 3 PROJSHARE=/usr/share/proj
 
-set +o errexit
+rm -rf $PREP_TREE
+mkdir -p $PREP_TREE/usr
+make install prefix=$PREP_TREE/usr PROJSHARE=/usr/share/proj
 
-dpkg-buildpackage $FLAGS
+cd ..
+./post_install_fixes.py
 
-#cp ../*.deb /vagrant/debs
+mkdir -p debwrk/DEBIAN
+sed 's/@@@PACKAGING@@@/'$PACKAGING'/g' control.debian > debwrk/DEBIAN/control
+
+rm -f grass_*.deb
+dpkg-deb --build debwrk $DEB
+
+echo Created: $DEB
+
+cp $DEB $HOME/debs
+
+
+
+
+

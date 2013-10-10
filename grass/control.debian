@@ -1,0 +1,10 @@
+Package: grass
+Version: 7.0.svn-@@@PACKAGING@@@
+Architecture: amd64
+Maintainer: Frank Warmerdam <warmerdam@pobox.com>
+Installed-Size: 755
+Depends: libgdal1h, libfreetype6, wget, ghostscript, netpbm, curl, wget, xml2, proj-bin, gdal-bin, python-numpy, python, libtiff4, libreadline6, libpq5, unixodbc
+Section: science
+Priority: extra
+Description: Planet Labs Minimalist GRASS
+
