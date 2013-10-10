@@ -50,6 +50,9 @@ cd ..
 
 mkdir -p debwrk/DEBIAN
 sed 's/@@@PACKAGING@@@/'$PACKAGING'/g' control.debian > debwrk/DEBIAN/control
+mkdir -p debwrk/etc/ld.so.conf.d
+echo "/usr/grass-7.0.svn/lib" > debwrk/etc/ld.so.conf.d/grass.conf
+cp postinst.debian debwrk/DEBIAN/postinst
 
 rm -f grass_*.deb
 dpkg-deb --build debwrk $DEB
