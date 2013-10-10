@@ -1,0 +1,5 @@
+opencv-*.*.*.*
+cmake_config.log
+debwrk
+*.deb
+*.tar.gz
