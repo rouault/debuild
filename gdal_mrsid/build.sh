@@ -2,7 +2,7 @@
 
 set -o errexit
 
-GDALBLD=/home/vagrant/packages/gdal/gdal
+GDALBLD=/vagrant/packages/gdal/gdal
 MRSIDSDK=`pwd`/MrSID-Raster-8.5.0
 
 if test "x$1" = "x" ; then
