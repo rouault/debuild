@@ -2,7 +2,7 @@
 
 set -o errexit
 
-GDALBLD=/home/vagrant/packages/gdal/gdal
+GDALBLD=/vagrant/packages/gdal/gdal
 ECWSDK=`pwd`/ecwjp2_sdk_minimal
 
 if test "x$1" = "x" ; then
