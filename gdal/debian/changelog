@@ -1,3 +1,27 @@
+gdal (1.11.0-11pl) precise; urgency=high
+
+  * Force complete rebuild.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
+gdal (1.11.0-10pl) precise; urgency=high
+
+  * Refresh with fix for gdalwarp on CE_Warnings.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
+gdal (1.11.0-9pl) precise; urgency=high
+
+  * Refresh with DST_METHOD=RPC method.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
+gdal (1.11.0-8pl) precise; urgency=high
+
+  * Refresh with DST_METHOD transformer option.
+
+ -- Frank Warmerdam <warmerdam@pobox.com>  Fri, 05 Jul 2013 11:47:36 -0400
+
 gdal (1.11.0-7pl) precise; urgency=high
 
   * Refresh with cubic resampler fix (#5209).
