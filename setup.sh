@@ -20,6 +20,7 @@ apt-get update
 
 if test \! -d $HOME/debs ; then
   mkdir $HOME/debs
+  chown ubuntu $HOME/debs
 fi
 if test \! -e /vagrant ; then
   sudo ln -s /home/ubuntu /vagrant
@@ -29,3 +30,4 @@ sudo apt-get install \
     subversion python-pip emacs
 
 sudo pip install requests
+
