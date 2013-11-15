@@ -2,7 +2,7 @@
 
 set -o errexit
 
-VERSION=2.4.6.1
+VERSION=2.4.6.1s
 
 if test `lsb_release -c | cut -f 2` != 'precise' ; then
   echo "Not running on Ubuntu precise, shouldn't you be?"
@@ -25,14 +25,14 @@ PACKAGING=$1
 
 DEBUILD_TREE=`pwd`
 
-OPENCV_URL=http://images.notprod.pl/opencv-$VERSION.tar.gz
+OPENCV_URL=/home/ubuntu/opencv-$VERSION.tar.gz
 
 OPENCV_TGZ=`basename $OPENCV_URL`
 OPENCV_SRC=`basename $OPENCV_TGZ .tar.gz`
 
 # only download opencv tgz if we haven't already
 if [ ! -f $OPENCV_TGZ ]; then
-  curl $OPENCV_URL -o $OPENCV_TGZ
+  cp $OPENCV_URL $OPENCV_TGZ
   # if we download a new TGZ, make sure the old unziped version was deleted
   rm -rf $OPENCV_SRC
 fi

@@ -1,8 +1,9 @@
 #!/bin/bash
 
 set -o errexit
+set -o xtrace
 
-VERSION=1.8.4
+VERSION=1.8.4s
 
 if test `lsb_release -c | cut -f 2` != 'precise' ; then
   echo "Not running on Ubuntu precise, shouldn't you be?"
@@ -25,14 +26,12 @@ PACKAGING=$1
 
 DEBUILD_TREE=`pwd`
 
-FLANN_URL=http://images.notprod.pl/flann-${VERSION}-src.tgz
-
-FLANN_TGZ=`basename $FLANN_URL`
-FLANN_SRC=`basename $FLANN_TGZ .tgz`
+FLANN_TGZ=flann-${VERSION}-src.tgz
+FLANN_SRC=`basename $FLANN_TGZ -src.tgz`
 
 # only download flann tgz if we haven't already
 if [ ! -f $FLANN_TGZ ]; then
-  curl $FLANN_URL -o $FLANN_TGZ
+  cp ~/$FLANN_TGZ .
   # if we download a new TGZ, make sure the old unziped version was deleted
   rm -rf $FLANN_SRC
 fi
